@@ -117,7 +117,7 @@ function activate({ subscriptions }) {
 	}));
 
 	// create a new status bar item that we can now manage
-	myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+	myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
 	myStatusBarItem.text = `Export MySQL`;
 	myStatusBarItem.command = myCommandId;
 	subscriptions.push(myStatusBarItem);
