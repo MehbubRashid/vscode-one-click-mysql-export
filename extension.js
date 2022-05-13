@@ -4,6 +4,7 @@ const vscode = require('vscode');
 var _ = require("lodash");
 var fs = require("fs");
 var path = require('path');
+var mysqldump = require('mysqldump');
 
 
 let myStatusBarItem;
@@ -34,22 +35,30 @@ function activate({ subscriptions }) {
 			}
 			else {
 				var defaults = {
+					// Which exporter to use. values can be (mysqldump or mysqldump-npm) 
+					// mysqldump is the default exporter that comes with mysql.
+					// mysqldump-npm will use a node.js package for exporting sql.
+					"exporter": "mysqldump",
+
+					// Whether or not you want to use your custom command
+					// Note: applicable when using mysqldump as exporter
 					"useCustomCommand": false,
 
 					// Example: C:\wamp64\bin\mysql\mysql5.7.36\bin\mysqldump -h 127.0.0.1 -u root -p --default-character-set utf8mb4 mess > c:\wamp64\www\etoiles\etoiles.sql
 					"customCommand": "", 
 
-					//directory path where the mysqldump executable is located. (not necessary if customCommand is provided)
+					// Directory path where the mysqldump executable is located. 
+					// Not necessary if customCommand is provided or exporter is set to mysqldump-npm
 					"mysqlDumpDir": "C:/wamp64/bin/mysql/mysql8.0.27/bin", 
 
-					//not necessary if customCommand is provided
+					// Not necessary if customCommand is provided
 					"host": "localhost", 
 					"user": "root",
 					"pass": "",
 					"port": 3306,
 					"db": "",
-					
-					//destination file (not necessary if customCommand is provided)
+
+					// Destination file (not necessary if customCommand is provided)
 					"destination": "db.sql" 
 				};
 
@@ -60,20 +69,39 @@ function activate({ subscriptions }) {
 					configObject = JSON.parse(configjson);
 					var realconfig = _.defaults(configObject, defaults);
 					var destination = path.join(openedFolderPath, realconfig.destination);
-					var dumper = path.join(realconfig.mysqlDumpDir, 'mysqldump')
-					var command = `${dumper} -h ${realconfig.host} -u ${realconfig.user} -p --default-character-set utf8mb4 ${realconfig.db} > ${destination}`;
-					if ( realconfig.useCustomCommand && 'customCommand' in realconfig && realconfig.customCommand ) {
-						command = realconfig.customCommand;
-					}
+					if ( realconfig.exporter === 'mysqldump' ) {
+						var dumper = path.join(realconfig.mysqlDumpDir, 'mysqldump')
+						var command = `${dumper} -h ${realconfig.host} -u ${realconfig.user} -p --default-character-set utf8mb4 ${realconfig.db} > ${destination}`;
+						if ( realconfig.useCustomCommand && 'customCommand' in realconfig && realconfig.customCommand ) {
+							command = realconfig.customCommand;
+						}
 
-					// create a terminal first if not exist already.
-					if ( !terminal ) {
+						// create a terminal first if not exist already.
+						if ( !terminal ) {
 
-						terminal = vscode.window.createTerminal(`Export MySQL #${NEXT_TERM_ID}`);
+							terminal = vscode.window.createTerminal(`Export MySQL #${NEXT_TERM_ID}`);
+						}
+						terminal.sendText(command);
+						terminal.sendText(realconfig.pass);
+						terminal.show();
 					}
-					terminal.sendText(command);
-					terminal.sendText(realconfig.pass);
-					terminal.show();
+					else if ( realconfig.exporter === 'mysqldump-npm' ) {
+						mysqldump({
+							connection: {
+								host: realconfig.host,
+								user: realconfig.user,
+								password: realconfig.pass,
+								database: realconfig.db,
+								charset: "UTF8MB4_UNICODE_520_CI"
+							},
+							dumpToFile: destination,
+							dump: {
+								data: {
+									format: false
+								}
+							}
+						});
+					}
 				} catch (err) {
 					showErr(err);
 				}
