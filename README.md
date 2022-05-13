@@ -12,6 +12,8 @@ Create a JSON configuration file inside your project folder in the following str
 Define your MySQL server configuration in that JSON file.
 ![JSON configuration file](images/jsonfile.jpg)
 
+When you want to export, Click on `Export MySQL` from status bar or open command palette, type `Export MySQL` and hit enter.
+
 ### Configuration Options
 
 - `exporter` - Which exporter to use. values can be (`mysqldump` or `mysqldump-npm`). Default is `mysqldump-npm`.
