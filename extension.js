@@ -71,7 +71,7 @@ function activate({ subscriptions }) {
 					var destination = path.join(openedFolderPath, realconfig.destination);
 					if ( realconfig.exporter === 'mysqldump' ) {
 						var dumper = path.join(realconfig.mysqlDumpDir, 'mysqldump')
-						var command = `${dumper} -h ${realconfig.host} -u ${realconfig.user} -p --default-character-set utf8mb4 ${realconfig.db} > ${destination}`;
+						var command = `${dumper} -h ${realconfig.host} --port ${realconfig.port} -u ${realconfig.user} -p --default-character-set utf8mb4 ${realconfig.db} > ${destination}`;
 						if ( realconfig.useCustomCommand && 'customCommand' in realconfig && realconfig.customCommand ) {
 							command = realconfig.customCommand;
 						}
@@ -92,7 +92,8 @@ function activate({ subscriptions }) {
 								user: realconfig.user,
 								password: realconfig.pass,
 								database: realconfig.db,
-								charset: "UTF8MB4_UNICODE_520_CI"
+								charset: "UTF8MB4_UNICODE_520_CI",
+								port: realconfig.port
 							},
 							dumpToFile: destination,
 							dump: {
