@@ -4,8 +4,6 @@ const vscode = require('vscode');
 var _ = require("lodash");
 var fs = require("fs");
 var path = require('path');
-var mysqldump = require('mysqldump');
-const {execSync} = require('child_process');
 
 
 let myStatusBarItem;
@@ -21,6 +19,8 @@ function activate({ subscriptions }) {
 	// register a command that is invoked when the status bar
 	// item is selected
 	const myCommandId = 'vscode-one-click-mysql-export.export';
+	let NEXT_TERM_ID = 1;
+	var terminal = '';
 	subscriptions.push(vscode.commands.registerCommand(myCommandId, () => {
 		var msg = '';
 		if(vscode.workspace.workspaceFolders !== undefined) {
@@ -34,7 +34,7 @@ function activate({ subscriptions }) {
 			}
 			else {
 				var defaults = {
-					"mysqlDumpDir": "C:/wamp64/bin/mysql/mysql8.0.27/bin",
+					"mysqlDumpDir": "C:/wamp64/bin/mysql/mysql8.0.27/bin", //directory path where the mysqldump executable is located.
 					"host": "localhost",
 					"user": "root",
 					"pass": "",
@@ -50,24 +50,17 @@ function activate({ subscriptions }) {
 					configObject = JSON.parse(configjson);
 					var realconfig = _.defaults(configObject, defaults);
 					var destination = path.join(openedFolderPath, realconfig.destination);
-					// var dumper = path.join(realconfig.mysqlDumpDir, 'mysqldump')
-					// var command = `${dumper} -h'${realconfig.host}' -u'${realconfig.user}' -p'${realconfig.pass}' ${realconfig.db} > ${destination}`;
-					// let output = execSync(command);
-					// console.log(output);
-					mysqldump({
-						connection: {
-							host: realconfig.host,
-							user: realconfig.user,
-							password: realconfig.pass,
-							database: realconfig.db,
-						},
-						dumpToFile: destination,
-						dump: {
-							data: {
-								format: false
-							}
-						}
-					});
+					var dumper = path.join(realconfig.mysqlDumpDir, 'mysqldump')
+					var command = `${dumper} -h ${realconfig.host} -u ${realconfig.user} -p'${realconfig.pass}' ${realconfig.db} > ${destination}`;
+					console.log(command);
+
+					// create a terminal first if not exist already.
+					if ( !terminal ) {
+
+						terminal = vscode.window.createTerminal(`Export MySQL #${NEXT_TERM_ID}`);
+					}
+					terminal.sendText(command);
+					terminal.show();
 				} catch (err) {
 					showErr(err);
 				}
