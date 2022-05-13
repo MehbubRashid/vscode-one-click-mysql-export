@@ -136,14 +136,6 @@ function showMsg(msg) {
 // this method is called when your extension is deactivated
 function deactivate() {}
 
-function getNumberOfSelectedLines(editor) {
-	let lines = 0;
-	if (editor) {
-		lines = editor.selections.reduce((prev, curr) => prev + (curr.end.line - curr.start.line), 0);
-	}
-	return lines;
-}
-
 module.exports = {
 	activate,
 	deactivate
