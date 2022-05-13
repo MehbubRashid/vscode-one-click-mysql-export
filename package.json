@@ -3,7 +3,7 @@
   "displayName": "One-Click MySQL Export",
   "description": "Export mysql database in one click.",
   "publisher": "mehbubrashid",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.67.0"
   },

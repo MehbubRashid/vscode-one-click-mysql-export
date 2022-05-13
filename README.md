@@ -45,4 +45,5 @@ When you want to export, Click on `Export MySQL` from status bar or open command
 ---
 
 ## Version history
-- 0.1.0 - First version containing all basic features
+- 0.0.2 - Readme change
+- 0.0.1 - First version containing all basic features
