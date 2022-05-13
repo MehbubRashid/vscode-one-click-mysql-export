@@ -11,6 +11,10 @@
   "categories": [
     "Other"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MehbubRashid/vscode-one-click-mysql-export.git"
+  },
   "activationEvents": [
     "onStartupFinished"
   ],
