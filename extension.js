@@ -34,13 +34,23 @@ function activate({ subscriptions }) {
 			}
 			else {
 				var defaults = {
-					"mysqlDumpDir": "C:/wamp64/bin/mysql/mysql8.0.27/bin", //directory path where the mysqldump executable is located.
-					"host": "localhost",
+					"useCustomCommand": false,
+
+					// Example: C:\wamp64\bin\mysql\mysql5.7.36\bin\mysqldump -h 127.0.0.1 -u root -p --default-character-set utf8mb4 mess > c:\wamp64\www\etoiles\etoiles.sql
+					"customCommand": "", 
+
+					//directory path where the mysqldump executable is located. (not necessary if customCommand is provided)
+					"mysqlDumpDir": "C:/wamp64/bin/mysql/mysql8.0.27/bin", 
+
+					//not necessary if customCommand is provided
+					"host": "localhost", 
 					"user": "root",
 					"pass": "",
 					"port": 3306,
 					"db": "",
-					"destination": "db.sql"
+					
+					//destination file (not necessary if customCommand is provided)
+					"destination": "db.sql" 
 				};
 
 				var configjson = fs.readFileSync(configFile).toString();
@@ -51,8 +61,10 @@ function activate({ subscriptions }) {
 					var realconfig = _.defaults(configObject, defaults);
 					var destination = path.join(openedFolderPath, realconfig.destination);
 					var dumper = path.join(realconfig.mysqlDumpDir, 'mysqldump')
-					var command = `${dumper} -h ${realconfig.host} -u ${realconfig.user} -p'${realconfig.pass}' ${realconfig.db} > ${destination}`;
-					console.log(command);
+					var command = `${dumper} -h ${realconfig.host} -u ${realconfig.user} -p --default-character-set utf8mb4 ${realconfig.db} > ${destination}`;
+					if ( realconfig.useCustomCommand && 'customCommand' in realconfig && realconfig.customCommand ) {
+						command = realconfig.customCommand;
+					}
 
 					// create a terminal first if not exist already.
 					if ( !terminal ) {
@@ -60,6 +72,7 @@ function activate({ subscriptions }) {
 						terminal = vscode.window.createTerminal(`Export MySQL #${NEXT_TERM_ID}`);
 					}
 					terminal.sendText(command);
+					terminal.sendText(realconfig.pass);
 					terminal.show();
 				} catch (err) {
 					showErr(err);
