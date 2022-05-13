@@ -1,65 +1,45 @@
-# vscode-one-click-mysql-export README
+# One-Click MySQL Export
 
-This is the README for your extension "vscode-one-click-mysql-export". After writing up a brief description, we recommend including the following sections.
+Export mysql database in one click from vscode.
 
-## Features
+![Demo of extension](images/preview.gif)
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## Usage
 
-For example if there is an image subfolder under your extension project workspace:
+Create a JSON configuration file inside your project folder in the following structure:-
+`YOUR_FOLDER/.vscode/mysql-export.json`
 
-\!\[feature X\]\(images/feature-x.png\)
+Define your MySQL server configuration in that JSON file.
+![JSON configuration file](images/jsonfile.jpg)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+### Configuration Options
 
-## Requirements
+- `exporter` - Which exporter to use. values can be (`mysqldump` or `mysqldump-npm`). Default is `mysqldump-npm`.
+        
+      `mysqldump` is the default exporter that comes with mysql.
+      `mysqldump-npm` will use a node.js package for exporting sql.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- `mysqlDumpDir` - Specify the mysqldump executable folder path if you are using `mysqldump` as exporter. Default: `C:/wamp64/bin/mysql/mysql8.0.27/bin`. Not necessary to specify if you are using the default `mysqldump-npm` as exporter.
 
-## Extension Settings
+- `useCustomCommand` - Whether or not you want to use your custom command. Applicable when using `mysqldump` as exporter. Default is `false`. If you set it to `true`, you must specify `customCommand` option and the rest of the options (host, user, pass, port, db, destination) will not be necessary. Not necessary to specify if you are using the default `mysqldump-npm` as exporter.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+- `customCommand` - Your custom mysqldump command. Example: `mysqldump -h 127.0.0.1 -u root -p --default-character-set utf8mb4 mess > c:\wamp64\www\etoiles\etoiles.sql`. You will be promted to provide the db password afterwards. Not necessary to specify if you are using the default `mysqldump-npm` as exporter.
 
-For example:
 
-This extension contributes the following settings:
+- `host`
+- `user`
+- `pass`
+- `port`
+- `db`
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+- `destination` - Where and in which name you want to save the exported file. Default: `db.sql`
 
-## Known Issues
+---
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+### Found any bugs? Got any questions or ideas?
 
-## Release Notes
+- Rise a ticket [here](https://github.com/MehbubRashid/vscode-one-click-mysql-export/issues) or feel free to create Pull Requests!
+---
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+## Version history
+- 0.1.0 - First version containing all basic features
