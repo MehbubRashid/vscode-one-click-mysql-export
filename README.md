@@ -18,8 +18,9 @@ When you want to export, Click on `Export MySQL` from status bar or open command
 
 - `exporter` - Which exporter to use. values can be (`mysqldump` or `mysqldump-npm`). Default is `mysqldump-npm`.
         
-      `mysqldump` is the default exporter that comes with mysql.
-      `mysqldump-npm` will use a node.js package for exporting sql.
+  - `mysqldump` is the exporter that comes with mysql. It reduces export file size and also supports special characters like emoji support. Though the default option is mysqldump-npm, but we encourage using mysqldump.
+
+  - `mysqldump-npm` will use a node.js package for exporting sql. It produces larger export files and doesn't support special characters like emoji.
 
 - `mysqlDumpDir` - Specify the mysqldump executable folder path if you are using `mysqldump` as exporter. Default: `C:/wamp64/bin/mysql/mysql8.0.27/bin`. Not necessary to specify if you are using the default `mysqldump-npm` as exporter.
 
