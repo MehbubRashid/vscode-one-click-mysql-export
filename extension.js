@@ -49,6 +49,7 @@ function activate({ subscriptions }) {
 
 					// Directory path where the mysqldump executable is located. 
 					// Not necessary if customCommand is provided or exporter is set to mysqldump-npm
+					// But required when customCommand is not provided and exporter is set to mysqldump
 					"mysqlDumpDir": "C:/wamp64/bin/mysql/mysql8.0.27/bin", 
 
 					// Not necessary if customCommand is provided
