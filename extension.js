@@ -38,7 +38,7 @@ function activate({ subscriptions }) {
 					// Which exporter to use. values can be (mysqldump or mysqldump-npm) 
 					// mysqldump is the default exporter that comes with mysql.
 					// mysqldump-npm will use a node.js package for exporting sql.
-					"exporter": "mysqldump",
+					"exporter": "mysqldump-npm",
 
 					// Whether or not you want to use your custom command
 					// Note: applicable when using mysqldump as exporter
@@ -72,7 +72,7 @@ function activate({ subscriptions }) {
 					var destination = path.join(openedFolderPath, realconfig.destination);
 					if ( realconfig.exporter === 'mysqldump' ) {
 						var dumper = path.join(realconfig.mysqlDumpDir, 'mysqldump')
-						var command = `${dumper} -h ${realconfig.host} --port ${realconfig.port} -u ${realconfig.user} -p --default-character-set utf8mb4 ${realconfig.db} > ${destination}`;
+						var command = `${dumper} -h ${realconfig.host} --port ${realconfig.port} -u ${realconfig.user} -p --default-character-set utf8mb4_unicode_520_ci ${realconfig.db} > ${destination}`;
 						if ( realconfig.useCustomCommand && 'customCommand' in realconfig && realconfig.customCommand ) {
 							command = realconfig.customCommand;
 						}
