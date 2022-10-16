@@ -45,6 +45,7 @@ When you want to export, Click on `Export MySQL` from status bar or open command
 ---
 
 ## Version history
+- 0.0.5 - Fixed issue of space in mysqldumpdir
 - 0.0.4 - Readme change
 - 0.0.3 - Changed default exporter
 - 0.0.2 - Readme change
