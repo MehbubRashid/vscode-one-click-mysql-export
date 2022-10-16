@@ -71,7 +71,7 @@ function activate({ subscriptions }) {
 						else {
 							var usingCustomCommand = false;
 							var dumper = path.join(realconfig.mysqlDumpDir, 'mysqldump')
-							var command = `${dumper} -h ${realconfig.host} --port ${realconfig.port} -u ${realconfig.user} -p --default-character-set utf8mb4 ${realconfig.db} > ${destination}`;
+							var command = `"${dumper}" -h ${realconfig.host} --port ${realconfig.port} -u ${realconfig.user} -p --default-character-set utf8mb4 ${realconfig.db} > ${destination}`;
 							if ( realconfig.useCustomCommand && 'customCommand' in realconfig && realconfig.customCommand ) {
 								usingCustomCommand = true;
 								command = realconfig.customCommand;
